@@ -3,16 +3,20 @@
 IP=''
 PORT='1194'
 
+path_ca= 'pki/ca.crt'
+path_ta= 'pki/ta.crt'
+
+
 
 cd /etc/openvpn/easy-rsa/
 for user_name in $*
 do
 	./easyrsa build-client-full ${user_name} nopass
 	mkdir /root/${user_name}
-	cp pki/ca.crt /root/${user_name}/ca.crt
+	cp ${path_ca} /root/${user_name}/ca.crt
 	cp pki/issued/${user_name}.crt /root/${user_name}/client.crt
 	cp pki/private/${user_name}.key /root/${user_name}/client.key
-	cp pki/ta.key /root/${user_name}/ta.key
+	cp ${path_ta} /root/${user_name}/ta.key
 	ca=$(cat /root/${user_name}/ca.crt)
 	cert=$(cat /root/${user_name}/client.crt)
 	key=$(cat /root/${user_name}/client.key)
